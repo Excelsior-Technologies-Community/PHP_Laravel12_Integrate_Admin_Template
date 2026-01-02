@@ -60,7 +60,7 @@ DB_PASSWORD=
 
 ---
 
-##  Final Folder Structure
+##  Folder Structure
 
 ```text
 public/
