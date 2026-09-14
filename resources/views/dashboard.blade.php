@@ -6,43 +6,82 @@
 
 <div class="container-fluid px-4">
 
-    {{-- Page Heading --}}
-    <h1 class="mt-4">
-        Admin Dashboard
-    </h1>
+    {{-- ========================================================= --}}
+    {{-- PAGE HEADER --}}
+    {{-- ========================================================= --}}
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
 
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">
-            Dashboard
-        </li>
-    </ol>
+        <div>
+            <h1 class="mb-1">
+                <i class="fas fa-tachometer-alt me-2"></i>
+                Admin Dashboard
+            </h1>
+
+            <p class="text-muted mb-0">
+                Laravel 12 + SB Admin Management Panel
+            </p>
+        </div>
+
+        <div>
+            <a href="{{ route('users.index') }}" class="btn btn-primary">
+                <i class="fas fa-users me-1"></i>
+                Manage Users
+            </a>
+
+            <a href="{{ route('activity.logs') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-list me-1"></i>
+                Activity Logs
+            </a>
+        </div>
+
+    </div>
+
 
     {{-- ========================================================= --}}
-    {{-- STATISTICS CARDS --}}
+    {{-- SUCCESS MESSAGE --}}
     {{-- ========================================================= --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
 
+            {{ session('success') }}
+
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+            </button>
+        </div>
+    @endif
+
+
+    {{-- ========================================================= --}}
+    {{-- MAIN STATISTICS --}}
+    {{-- ========================================================= --}}
     <div class="row">
 
         {{-- Total Users --}}
-        <div class="col-xl-3 col-md-6">
+        <div class="col-xl-3 col-md-6 mb-4">
 
-            <div class="card bg-primary text-white mb-4">
+            <div class="card bg-primary text-white shadow h-100">
 
                 <div class="card-body">
 
                     <div class="d-flex justify-content-between align-items-center">
 
                         <div>
-                            <div class="small">
+                            <div class="small text-uppercase fw-bold">
                                 Total Users
                             </div>
 
-                            <h2 class="mb-0">
-                                {{ $totalUsers }}
-                            </h2>
+                            <div class="fs-2 fw-bold">
+                                {{ number_format($totalUsers) }}
+                            </div>
                         </div>
 
-                        <i class="fas fa-users fa-2x opacity-75"></i>
+                        <div>
+                            <i class="fas fa-users fa-3x opacity-50"></i>
+                        </div>
 
                     </div>
 
@@ -51,9 +90,8 @@
                 <div class="card-footer d-flex align-items-center justify-content-between">
 
                     <a
-                        class="small text-white stretched-link"
                         href="{{ route('users.index') }}"
-                    >
+                        class="small text-white text-decoration-none">
                         View Users
                     </a>
 
@@ -65,10 +103,11 @@
 
         </div>
 
-        {{-- Verified Users --}}
-        <div class="col-xl-3 col-md-6">
 
-            <div class="card bg-success text-white mb-4">
+        {{-- Verified Users --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card bg-success text-white shadow h-100">
 
                 <div class="card-body">
 
@@ -76,95 +115,19 @@
 
                         <div>
 
-                            <div class="small">
+                            <div class="small text-uppercase fw-bold">
                                 Verified Users
                             </div>
 
-                            <h2 class="mb-0">
-                                {{ $verifiedUsers }}
-                            </h2>
-
-                        </div>
-
-                        <i class="fas fa-user-check fa-2x opacity-75"></i>
-
-                    </div>
-
-                </div>
-
-                <div class="card-footer">
-
-                    <span class="small">
-                        Email verified accounts
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        {{-- Today's Users --}}
-        <div class="col-xl-3 col-md-6">
-
-            <div class="card bg-warning text-white mb-4">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <div class="small">
-                                Today's Users
+                            <div class="fs-2 fw-bold">
+                                {{ number_format($verifiedUsers) }}
                             </div>
 
-                            <h2 class="mb-0">
-                                {{ $todayUsers }}
-                            </h2>
-
                         </div>
-
-                        <i class="fas fa-user-plus fa-2x opacity-75"></i>
-
-                    </div>
-
-                </div>
-
-                <div class="card-footer">
-
-                    <span class="small">
-                        Registered today
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        {{-- Activity Logs --}}
-        <div class="col-xl-3 col-md-6">
-
-            <div class="card bg-danger text-white mb-4">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between align-items-center">
 
                         <div>
-
-                            <div class="small">
-                                Activity Logs
-                            </div>
-
-                            <h2 class="mb-0">
-                                {{ $totalActivities }}
-                            </h2>
-
+                            <i class="fas fa-user-check fa-3x opacity-50"></i>
                         </div>
-
-                        <i class="fas fa-history fa-2x opacity-75"></i>
 
                     </div>
 
@@ -173,10 +136,104 @@
                 <div class="card-footer d-flex align-items-center justify-content-between">
 
                     <a
-                        class="small text-white stretched-link"
+                        href="{{ route('users.index', ['status' => 'verified']) }}"
+                        class="small text-white text-decoration-none">
+                        View Verified
+                    </a>
+
+                    <i class="fas fa-angle-right"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Today's Users --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card bg-warning text-dark shadow h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <div class="small text-uppercase fw-bold">
+                                Today's Users
+                            </div>
+
+                            <div class="fs-2 fw-bold">
+                                {{ number_format($todayUsers) }}
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <i class="fas fa-user-plus fa-3x opacity-50"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer d-flex align-items-center justify-content-between">
+
+                    <a
+                        href="{{ route('users.index', [
+                            'from_date' => now()->format('Y-m-d'),
+                            'to_date' => now()->format('Y-m-d')
+                        ]) }}"
+                        class="small text-dark text-decoration-none">
+                        View Today's Users
+                    </a>
+
+                    <i class="fas fa-angle-right"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Activity Logs --}}
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card bg-dark text-white shadow h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <div class="small text-uppercase fw-bold">
+                                Activity Logs
+                            </div>
+
+                            <div class="fs-2 fw-bold">
+                                {{ number_format($totalActivities) }}
+                            </div>
+
+                        </div>
+
+                        <div>
+                            <i class="fas fa-history fa-3x opacity-50"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer d-flex align-items-center justify-content-between">
+
+                    <a
                         href="{{ route('activity.logs') }}"
-                    >
-                        View Activity
+                        class="small text-white text-decoration-none">
+                        View Activity Logs
                     </a>
 
                     <i class="fas fa-angle-right"></i>
@@ -191,18 +248,24 @@
 
 
     {{-- ========================================================= --}}
-    {{-- SECONDARY STATISTICS --}}
+    {{-- USER SUMMARY --}}
     {{-- ========================================================= --}}
-
     <div class="row">
 
-        <div class="col-xl-6">
+        <div class="col-xl-6 mb-4">
 
-            <div class="card mb-4">
+            <div class="card shadow h-100">
 
                 <div class="card-header">
-                    <i class="fas fa-user-clock me-1"></i>
-                    User Registration Summary
+
+                    <div class="d-flex align-items-center">
+
+                        <i class="fas fa-chart-pie me-2"></i>
+
+                        <strong>User Summary</strong>
+
+                    </div>
+
                 </div>
 
                 <div class="card-body">
@@ -211,37 +274,97 @@
 
                         <div class="col-md-4">
 
-                            <h4 class="text-primary">
-                                {{ $newUsersThisMonth }}
-                            </h4>
+                            <div class="border rounded p-3 mb-3">
 
-                            <small class="text-muted">
-                                This Month
-                            </small>
+                                <div class="text-primary">
+                                    <i class="fas fa-calendar-alt fa-2x"></i>
+                                </div>
 
-                        </div>
+                                <h4 class="mt-2 mb-0">
+                                    {{ number_format($newUsersThisMonth) }}
+                                </h4>
 
-                        <div class="col-md-4">
+                                <small class="text-muted">
+                                    This Month
+                                </small>
 
-                            <h4 class="text-success">
-                                {{ $verifiedUsers }}
-                            </h4>
-
-                            <small class="text-muted">
-                                Verified
-                            </small>
+                            </div>
 
                         </div>
 
+
                         <div class="col-md-4">
 
-                            <h4 class="text-danger">
-                                {{ $unverifiedUsers }}
-                            </h4>
+                            <div class="border rounded p-3 mb-3">
 
-                            <small class="text-muted">
-                                Unverified
-                            </small>
+                                <div class="text-success">
+                                    <i class="fas fa-user-check fa-2x"></i>
+                                </div>
+
+                                <h4 class="mt-2 mb-0">
+                                    {{ number_format($verifiedUsers) }}
+                                </h4>
+
+                                <small class="text-muted">
+                                    Verified
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-4">
+
+                            <div class="border rounded p-3 mb-3">
+
+                                <div class="text-warning">
+                                    <i class="fas fa-user-clock fa-2x"></i>
+                                </div>
+
+                                <h4 class="mt-2 mb-0">
+                                    {{ number_format($unverifiedUsers) }}
+                                </h4>
+
+                                <small class="text-muted">
+                                    Unverified
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- Progress --}}
+                    @php
+                        $verificationPercentage = $totalUsers > 0
+                            ? round(($verifiedUsers / $totalUsers) * 100)
+                            : 0;
+                    @endphp
+
+                    <div class="mt-3">
+
+                        <div class="d-flex justify-content-between mb-1">
+
+                            <span class="small fw-bold">
+                                Email Verification Rate
+                            </span>
+
+                            <span class="small fw-bold">
+                                {{ $verificationPercentage }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress" style="height: 10px;">
+
+                            <div
+                                class="progress-bar bg-success"
+                                role="progressbar"
+                                style="width: {{ $verificationPercentage }}%;">
+                            </div>
 
                         </div>
 
@@ -253,36 +376,95 @@
 
         </div>
 
-        <div class="col-xl-6">
 
-            <div class="card mb-4">
+        {{-- ===================================================== --}}
+        {{-- SYSTEM STATUS --}}
+        {{-- ===================================================== --}}
+        <div class="col-xl-6 mb-4">
+
+            <div class="card shadow h-100">
 
                 <div class="card-header">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Admin Panel Status
+
+                    <i class="fas fa-server me-2"></i>
+
+                    <strong>System Status</strong>
+
                 </div>
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Laravel</span>
-                        <span class="badge bg-success">
-                            12.x
-                        </span>
-                    </div>
+                    <div class="list-group list-group-flush">
 
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Admin Template</span>
-                        <span class="badge bg-primary">
-                            SB Admin
-                        </span>
-                    </div>
+                        <div class="list-group-item d-flex justify-content-between">
 
-                    <div class="d-flex justify-content-between">
-                        <span>Database</span>
-                        <span class="badge bg-success">
-                            Connected
-                        </span>
+                            <span>
+                                <i class="fab fa-laravel text-danger me-2"></i>
+                                Laravel
+                            </span>
+
+                            <span class="badge bg-success">
+                                {{ app()->version() }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span>
+                                <i class="fab fa-php text-primary me-2"></i>
+                                PHP
+                            </span>
+
+                            <span class="badge bg-success">
+                                {{ PHP_VERSION }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span>
+                                <i class="fas fa-database text-info me-2"></i>
+                                Database
+                            </span>
+
+                            <span class="badge bg-success">
+                                Connected
+                            </span>
+
+                        </div>
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span>
+                                <i class="fas fa-palette text-warning me-2"></i>
+                                Admin Theme
+                            </span>
+
+                            <span class="badge bg-primary">
+                                SB Admin
+                            </span>
+
+                        </div>
+
+
+                        <div class="list-group-item d-flex justify-content-between">
+
+                            <span>
+                                <i class="fas fa-clock text-secondary me-2"></i>
+                                Server Time
+                            </span>
+
+                            <span class="badge bg-dark">
+                                {{ now()->format('Y-m-d H:i:s') }}
+                            </span>
+
+                        </div>
+
                     </div>
 
                 </div>
@@ -295,30 +477,29 @@
 
 
     {{-- ========================================================= --}}
-    {{-- USER REGISTRATION CHART --}}
+    {{-- LAST 7 DAYS CHART --}}
     {{-- ========================================================= --}}
-
     <div class="row">
 
-        <div class="col-xl-7">
+        <div class="col-xl-8 mb-4">
 
-            <div class="card mb-4">
+            <div class="card shadow h-100">
 
                 <div class="card-header">
 
-                    <i class="fas fa-chart-area me-1"></i>
+                    <i class="fas fa-chart-line me-2"></i>
 
-                    User Registrations - Last 7 Days
+                    <strong>User Registrations - Last 7 Days</strong>
 
                 </div>
 
                 <div class="card-body">
 
-                    <canvas
-                        id="myAreaChart"
-                        width="100%"
-                        height="40"
-                    ></canvas>
+                    <div style="height: 320px;">
+
+                        <canvas id="userRegistrationChart"></canvas>
+
+                    </div>
 
                 </div>
 
@@ -327,25 +508,180 @@
         </div>
 
 
-        <div class="col-xl-5">
+        {{-- Quick Actions --}}
+        <div class="col-xl-4 mb-4">
 
-            <div class="card mb-4">
+            <div class="card shadow h-100">
 
                 <div class="card-header">
 
-                    <i class="fas fa-chart-bar me-1"></i>
+                    <i class="fas fa-bolt me-2"></i>
 
-                    Monthly User Registrations
+                    <strong>Quick Actions</strong>
 
                 </div>
 
                 <div class="card-body">
 
-                    <canvas
-                        id="myBarChart"
-                        width="100%"
-                        height="40"
-                    ></canvas>
+                    <div class="d-grid gap-2">
+
+                        <a
+                            href="{{ route('users.index') }}"
+                            class="btn btn-primary">
+
+                            <i class="fas fa-users me-2"></i>
+                            Manage Users
+
+                        </a>
+
+
+                        <a
+                            href="{{ route('users.index', ['status' => 'verified']) }}"
+                            class="btn btn-success">
+
+                            <i class="fas fa-user-check me-2"></i>
+                            Verified Users
+
+                        </a>
+
+
+                        <a
+                            href="{{ route('users.index', ['status' => 'unverified']) }}"
+                            class="btn btn-warning">
+
+                            <i class="fas fa-user-clock me-2"></i>
+                            Unverified Users
+
+                        </a>
+
+
+                        <a
+                            href="{{ route('activity.logs') }}"
+                            class="btn btn-dark">
+
+                            <i class="fas fa-history me-2"></i>
+                            Activity Logs
+
+                        </a>
+
+
+                        <a
+                            href="{{ route('users.export') }}"
+                            class="btn btn-outline-primary">
+
+                            <i class="fas fa-file-csv me-2"></i>
+                            Export Users CSV
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {{-- ========================================================= --}}
+    {{-- MONTHLY CHART --}}
+    {{-- ========================================================= --}}
+    <div class="row">
+
+        <div class="col-xl-8 mb-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-header">
+
+                    <i class="fas fa-chart-bar me-2"></i>
+
+                    <strong>User Registrations - Last 6 Months</strong>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div style="height: 320px;">
+
+                        <canvas id="monthlyUserChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Activity Summary --}}
+        <div class="col-xl-4 mb-4">
+
+            <div class="card shadow h-100">
+
+                <div class="card-header">
+
+                    <i class="fas fa-info-circle me-2"></i>
+
+                    <strong>Dashboard Information</strong>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            Total Users
+                        </small>
+
+                        <h4>
+                            {{ number_format($totalUsers) }}
+                        </h4>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            New This Month
+                        </small>
+
+                        <h4 class="text-primary">
+                            {{ number_format($newUsersThisMonth) }}
+                        </h4>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <small class="text-muted">
+                            Total Activities
+                        </small>
+
+                        <h4 class="text-dark">
+                            {{ number_format($totalActivities) }}
+                        </h4>
+
+                    </div>
+
+
+                    <div>
+
+                        <small class="text-muted">
+                            Verification Rate
+                        </small>
+
+                        <h4 class="text-success">
+                            {{ $verificationPercentage }}%
+                        </h4>
+
+                    </div>
 
                 </div>
 
@@ -359,39 +695,55 @@
     {{-- ========================================================= --}}
     {{-- RECENT ACTIVITY --}}
     {{-- ========================================================= --}}
-
-    <div class="card mb-4">
+    <div class="card shadow mb-4">
 
         <div class="card-header">
 
-            <i class="fas fa-history me-1"></i>
+            <div class="d-flex justify-content-between align-items-center">
 
-            Recent Admin Activity
+                <div>
 
-            <a
-                href="{{ route('activity.logs') }}"
-                class="btn btn-sm btn-primary float-end"
-            >
-                View All
-            </a>
+                    <i class="fas fa-history me-2"></i>
+
+                    <strong>Recent Admin Activity</strong>
+
+                </div>
+
+                <a
+                    href="{{ route('activity.logs') }}"
+                    class="btn btn-sm btn-outline-primary">
+
+                    View All
+
+                </a>
+
+            </div>
 
         </div>
 
-        <div class="card-body">
 
-            @if($recentActivities->count() > 0)
+        <div class="card-body p-0">
+
+            @if($recentActivities->count())
 
                 <div class="table-responsive">
 
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-hover table-striped mb-0">
 
                         <thead class="table-light">
 
                             <tr>
+
+                                <th>ID</th>
+
                                 <th>Action</th>
+
                                 <th>Description</th>
+
                                 <th>IP Address</th>
-                                <th>Date</th>
+
+                                <th>Date & Time</th>
+
                             </tr>
 
                         </thead>
@@ -403,11 +755,25 @@
                                 <tr>
 
                                     <td>
+                                        #{{ $activity->id }}
+                                    </td>
 
-                                        <span class="badge bg-primary">
+                                    <td>
 
+                                        @php
+                                            $badgeClass = match($activity->action) {
+                                                'Dashboard Viewed' => 'primary',
+                                                'Users Viewed' => 'info',
+                                                'User Viewed' => 'success',
+                                                'User Verification Changed' => 'warning',
+                                                'Users Exported' => 'dark',
+                                                'Activity Logs Exported' => 'secondary',
+                                                default => 'secondary',
+                                            };
+                                        @endphp
+
+                                        <span class="badge bg-{{ $badgeClass }}">
                                             {{ $activity->action }}
-
                                         </span>
 
                                     </td>
@@ -417,12 +783,24 @@
                                     </td>
 
                                     <td>
-                                        {{ $activity->ip_address ?? 'N/A' }}
+                                        <code>
+                                            {{ $activity->ip_address ?? 'N/A' }}
+                                        </code>
                                     </td>
 
                                     <td>
 
-                                        {{ $activity->created_at->format('d M Y, h:i A') }}
+                                        <small>
+
+                                            {{ $activity->created_at->format('d M Y') }}
+
+                                            <br>
+
+                                            <span class="text-muted">
+                                                {{ $activity->created_at->format('h:i A') }}
+                                            </span>
+
+                                        </small>
 
                                     </td>
 
@@ -438,8 +816,16 @@
 
             @else
 
-                <div class="alert alert-info mb-0">
-                    No admin activities found.
+                <div class="text-center p-5">
+
+                    <i class="fas fa-history fa-3x text-muted mb-3"></i>
+
+                    <h5>No Activity Found</h5>
+
+                    <p class="text-muted mb-0">
+                        Admin activity will appear here.
+                    </p>
+
                 </div>
 
             @endif
@@ -453,6 +839,10 @@
 @endsection
 
 
+{{-- ============================================================= --}}
+{{-- CHART SCRIPTS --}}
+{{-- ============================================================= --}}
+
 @section('scripts')
 
 <script>
@@ -461,15 +851,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Area Chart - Last 7 Days
+    | Last 7 Days User Registration Chart
     |--------------------------------------------------------------------------
     */
 
-    const areaCanvas = document.getElementById('myAreaChart');
+    const sevenDaysCanvas = document.getElementById('userRegistrationChart');
 
-    if (areaCanvas) {
+    if (sevenDaysCanvas) {
 
-        new Chart(areaCanvas, {
+        new Chart(sevenDaysCanvas, {
 
             type: 'line',
 
@@ -481,33 +871,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     label: 'New Users',
 
+                    data: @json($lastSevenDaysData),
+
+                    borderWidth: 2,
+
+                    fill: false,
+
                     lineTension: 0.3,
 
-                    backgroundColor: 'rgba(2,117,216,0.2)',
-
-                    borderColor: 'rgba(2,117,216,1)',
-
-                    pointRadius: 5,
-
-                    pointBackgroundColor: 'rgba(2,117,216,1)',
-
-                    pointBorderColor: 'rgba(255,255,255,0.8)',
-
-                    pointHoverRadius: 5,
-
-                    pointHoverBackgroundColor: 'rgba(2,117,216,1)',
-
-                    pointHitRadius: 50,
-
-                    pointBorderWidth: 2,
-
-                    data: @json($lastSevenDaysData)
+                    pointRadius: 4
 
                 }]
 
             },
 
             options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
 
                 scales: {
 
@@ -522,8 +904,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     yAxes: [{
 
                         ticks: {
+
                             beginAtZero: true,
+
                             precision: 0
+
                         }
 
                     }]
@@ -531,7 +916,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
 
                 legend: {
-                    display: false
+
+                    display: true
+
                 }
 
             }
@@ -543,15 +930,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Bar Chart - Monthly
+    | Monthly User Registration Chart
     |--------------------------------------------------------------------------
     */
 
-    const barCanvas = document.getElementById('myBarChart');
+    const monthlyCanvas = document.getElementById('monthlyUserChart');
 
-    if (barCanvas) {
+    if (monthlyCanvas) {
 
-        new Chart(barCanvas, {
+        new Chart(monthlyCanvas, {
 
             type: 'bar',
 
@@ -563,17 +950,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     label: 'New Users',
 
-                    backgroundColor: 'rgba(40,167,69,0.8)',
+                    data: @json($monthlyData),
 
-                    borderColor: 'rgba(40,167,69,1)',
-
-                    data: @json($monthlyData)
+                    borderWidth: 1
 
                 }]
 
             },
 
             options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
 
                 scales: {
 
@@ -588,8 +977,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     yAxes: [{
 
                         ticks: {
+
                             beginAtZero: true,
+
                             precision: 0
+
                         }
 
                     }]
@@ -597,7 +989,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
 
                 legend: {
-                    display: false
+
+                    display: true
+
                 }
 
             }
