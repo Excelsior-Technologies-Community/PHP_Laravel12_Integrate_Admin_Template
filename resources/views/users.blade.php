@@ -6,31 +6,100 @@
 
 <div class="container-fluid px-4">
 
+    {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
 
         <div>
 
             <h1 class="mb-1">
+                <i class="fas fa-users me-2"></i>
                 User Management
             </h1>
 
             <div class="text-muted">
-                Search, filter and manage registered users
+                Search, filter, sort and export registered users
             </div>
 
         </div>
 
-        <span class="badge bg-primary fs-6">
-            {{ $users->total() }} Users
-        </span>
+        <a
+            href="{{ route('users.export', request()->query()) }}"
+            class="btn btn-success"
+        >
+            <i class="fas fa-file-csv me-1"></i>
+            Export CSV
+        </a>
 
     </div>
 
 
-    {{-- ========================================================= --}}
-    {{-- SEARCH & FILTER --}}
-    {{-- ========================================================= --}}
+    {{-- Statistics --}}
+    <div class="row mb-4">
 
+        <div class="col-md-4">
+
+            <div class="card bg-primary text-white">
+
+                <div class="card-body">
+
+                    <div class="small">
+                        Matching Users
+                    </div>
+
+                    <h3 class="mb-0">
+                        {{ $users->total() }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card bg-success text-white">
+
+                <div class="card-body">
+
+                    <div class="small">
+                        Current Page
+                    </div>
+
+                    <h3 class="mb-0">
+                        {{ $users->count() }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card bg-info text-white">
+
+                <div class="card-body">
+
+                    <div class="small">
+                        Per Page
+                    </div>
+
+                    <h3 class="mb-0">
+                        {{ $perPage }}
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {{-- Filters --}}
     <div class="card mb-4">
 
         <div class="card-header">
@@ -51,36 +120,28 @@
                 <div class="row g-3">
 
                     {{-- Search --}}
-                    <div class="col-md-5">
+                    <div class="col-md-4">
 
                         <label class="form-label">
-                            Search User
+                            Search
                         </label>
 
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                <i class="fas fa-search"></i>
-                            </span>
-
-                            <input
-                                type="text"
-                                name="search"
-                                class="form-control"
-                                placeholder="Search by name or email..."
-                                value="{{ request('search') }}"
-                            >
-
-                        </div>
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control"
+                            placeholder="Name or email..."
+                            value="{{ request('search') }}"
+                        >
 
                     </div>
 
 
                     {{-- Status --}}
-                    <div class="col-md-3">
+                    <div class="col-md-2">
 
                         <label class="form-label">
-                            Verification Status
+                            Status
                         </label>
 
                         <select
@@ -89,7 +150,7 @@
                         >
 
                             <option value="">
-                                All Users
+                                All
                             </option>
 
                             <option
@@ -111,8 +172,70 @@
                     </div>
 
 
-                    {{-- Sort --}}
+                    {{-- Date From --}}
                     <div class="col-md-2">
+
+                        <label class="form-label">
+                            Date From
+                        </label>
+
+                        <input
+                            type="date"
+                            name="date_from"
+                            class="form-control"
+                            value="{{ request('date_from') }}"
+                        >
+
+                    </div>
+
+
+                    {{-- Date To --}}
+                    <div class="col-md-2">
+
+                        <label class="form-label">
+                            Date To
+                        </label>
+
+                        <input
+                            type="date"
+                            name="date_to"
+                            class="form-control"
+                            value="{{ request('date_to') }}"
+                        >
+
+                    </div>
+
+
+                    {{-- Per Page --}}
+                    <div class="col-md-2">
+
+                        <label class="form-label">
+                            Per Page
+                        </label>
+
+                        <select
+                            name="per_page"
+                            class="form-select"
+                        >
+
+                            @foreach([5, 10, 20, 30, 50] as $value)
+
+                                <option
+                                    value="{{ $value }}"
+                                    {{ $perPage == $value ? 'selected' : '' }}
+                                >
+                                    {{ $value }}
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+                    </div>
+
+
+                    {{-- Sort --}}
+                    <div class="col-md-3">
 
                         <label class="form-label">
                             Sort By
@@ -157,7 +280,7 @@
 
 
                     {{-- Direction --}}
-                    <div class="col-md-2">
+                    <div class="col-md-3">
 
                         <label class="form-label">
                             Order
@@ -207,6 +330,14 @@
                         Reset
                     </a>
 
+                    <a
+                        href="{{ route('users.export', request()->query()) }}"
+                        class="btn btn-success"
+                    >
+                        <i class="fas fa-download me-1"></i>
+                        Export Filtered
+                    </a>
+
                 </div>
 
             </form>
@@ -216,15 +347,12 @@
     </div>
 
 
-    {{-- ========================================================= --}}
-    {{-- USERS TABLE --}}
-    {{-- ========================================================= --}}
-
+    {{-- Users Table --}}
     <div class="card mb-4">
 
         <div class="card-header">
 
-            <i class="fas fa-users me-1"></i>
+            <i class="fas fa-table me-1"></i>
 
             Users List
 
@@ -243,7 +371,7 @@
                             <tr>
 
                                 <th>
-                                    ID
+                                    #
                                 </th>
 
                                 <th>
@@ -262,7 +390,7 @@
                                     Registered
                                 </th>
 
-                                <th width="120">
+                                <th width="100">
                                     Action
                                 </th>
 
@@ -288,18 +416,16 @@
                                                 class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
                                                 style="width:40px;height:40px;"
                                             >
+
                                                 <strong>
                                                     {{ strtoupper(substr($user->name, 0, 1)) }}
                                                 </strong>
-                                            </div>
-
-                                            <div>
-
-                                                <strong>
-                                                    {{ $user->name }}
-                                                </strong>
 
                                             </div>
+
+                                            <strong>
+                                                {{ $user->name }}
+                                            </strong>
 
                                         </div>
 
@@ -358,8 +484,6 @@
 
                                             <i class="fas fa-eye"></i>
 
-                                            View
-
                                         </a>
 
                                     </td>
@@ -376,28 +500,45 @@
 
 
                 {{-- Pagination --}}
+                @if($users->lastPage() > 1)
 
-                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div class="mt-4">
 
-                    <div class="text-muted">
+                        <div class="text-center mb-2">
 
-                        Showing
-                        {{ $users->firstItem() }}
-                        to
-                        {{ $users->lastItem() }}
-                        of
-                        {{ $users->total() }}
-                        users
+                            <small class="text-muted">
+                                Page {{ $users->currentPage() }}
+                                of {{ $users->lastPage() }}
+                            </small>
+
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+
+                            <div class="user-pagination">
+
+                                @for(
+                                    $page = 1;
+                                    $page <= $users->lastPage();
+                                    $page++
+                                )
+
+                                    <a
+                                        href="{{ $users->url($page) }}"
+                                        class="page-number {{ $page == $users->currentPage() ? 'active' : '' }}"
+                                    >
+                                        {{ $page }}
+                                    </a>
+
+                                @endfor
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                    <div>
-
-                        {{ $users->links('pagination::bootstrap-5') }}
-
-                    </div>
-
-                </div>
+                @endif
 
             @else
 
@@ -405,7 +546,7 @@
 
                     <i class="fas fa-info-circle me-1"></i>
 
-                    No users found matching your search/filter.
+                    No users found matching your filters.
 
                 </div>
 
@@ -416,5 +557,44 @@
     </div>
 
 </div>
+
+
+<style>
+
+.user-pagination {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.page-number {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #dee2e6;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+
+    color: #0d6efd;
+
+    background: #fff;
+}
+
+.page-number:hover,
+.page-number.active {
+    background: #0d6efd;
+    color: #fff;
+}
+
+</style>
 
 @endsection
