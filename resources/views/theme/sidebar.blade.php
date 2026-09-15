@@ -1,236 +1,65 @@
 <div id="layoutSidenav_nav">
-
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-
-        {{-- ===================================================== --}}
-        {{-- SIDEBAR MENU --}}
-        {{-- ===================================================== --}}
-
         <div class="sb-sidenav-menu">
-
             <div class="nav">
 
-                {{-- ================================================= --}}
-                {{-- CORE --}}
-                {{-- ================================================= --}}
-
-                <div class="sb-sidenav-menu-heading">
-                    Core
-                </div>
-
+                {{-- CORE SECTION --}}
+                <div class="sb-sidenav-menu-heading text-uppercase text-muted small fw-bold">Core</div>
 
                 {{-- Dashboard --}}
-                <a
-                    class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-
+                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt text-primary"></i></div>
                     Dashboard
-
                 </a>
 
+                {{-- USER MANAGEMENT SECTION --}}
+                <div class="sb-sidenav-menu-heading text-uppercase text-muted small fw-bold">Management</div>
 
-                {{-- ================================================= --}}
-                {{-- USER MANAGEMENT --}}
-                {{-- ================================================= --}}
-
-                <div class="sb-sidenav-menu-heading">
-                    User Management
+                {{-- Users Parent Menu --}}
+                <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : 'collapsed' }}" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="{{ request()->routeIs('users.*') ? 'true' : 'false' }}" aria-controls="collapseUsers">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users text-info"></i></div>
+                    Users Management
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse {{ request()->routeIs('users.*') ? 'show' : '' }}" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link {{ request()->routeIs('users.index') ? 'active text-primary' : '' }}" href="{{ route('users.index') }}">
+                            <i class="fas fa-list me-2 small"></i> All Users
+                        </a>
+                        <a class="nav-link {{ request()->routeIs('users.trash') ? 'active text-danger' : '' }}" href="{{ route('users.trash') }}">
+                            <i class="fas fa-trash-alt me-2 small text-danger"></i> Recycle Bin (Trash)
+                        </a>
+                    </nav>
                 </div>
-
-
-                {{-- All Users --}}
-                <a
-                    class="nav-link {{ request()->routeIs('users.index') && !request()->has('status') ? 'active' : '' }}"
-                    href="{{ route('users.index') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-
-                    All Users
-
-                </a>
-
-
-                {{-- Verified Users --}}
-                <a
-                    class="nav-link {{ request()->routeIs('users.index') && request('status') === 'verified' ? 'active' : '' }}"
-                    href="{{ route('users.index', ['status' => 'verified']) }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-
-                    Verified Users
-
-                </a>
-
-
-                {{-- Unverified Users --}}
-                <a
-                    class="nav-link {{ request()->routeIs('users.index') && request('status') === 'unverified' ? 'active' : '' }}"
-                    href="{{ route('users.index', ['status' => 'unverified']) }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-user-clock"></i>
-                    </div>
-
-                    Unverified Users
-
-                </a>
-
-
-                {{-- Export Users --}}
-                <a
-                    class="nav-link"
-                    href="{{ route('users.export') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-file-csv"></i>
-                    </div>
-
-                    Export Users
-
-                </a>
-
-
-                {{-- ================================================= --}}
-                {{-- ADMINISTRATION --}}
-                {{-- ================================================= --}}
-
-                <div class="sb-sidenav-menu-heading">
-                    Administration
-                </div>
-
 
                 {{-- Activity Logs --}}
-                <a
-                    class="nav-link {{ request()->routeIs('activity.logs') ? 'active' : '' }}"
-                    href="{{ route('activity.logs') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
-
+                <a class="nav-link {{ request()->routeIs('activity.logs*') ? 'active' : '' }}" href="{{ route('activity.logs') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-history text-warning"></i></div>
                     Activity Logs
-
                 </a>
 
+                {{-- SYSTEM CONFIG SECTION --}}
+                <div class="sb-sidenav-menu-heading text-uppercase text-muted small fw-bold">System</div>
 
-                {{-- Export Activity Logs --}}
-                <a
-                    class="nav-link"
-                    href="{{ route('activity.logs.export') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-file-export"></i>
-                    </div>
-
-                    Export Activity Logs
-
+                {{-- Settings Hub --}}
+                <a class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}" href="{{ route('settings.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-sliders-h text-success"></i></div>
+                    System Settings
                 </a>
 
-
-                {{-- ================================================= --}}
-                {{-- ANALYTICS --}}
-                {{-- ================================================= --}}
-
-                <div class="sb-sidenav-menu-heading">
-                    Analytics
-                </div>
-
-
-                {{-- Dashboard Analytics --}}
-                <a
-                    class="nav-link"
-                    href="{{ route('dashboard') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-
-                    User Analytics
-
-                </a>
-
-
-                {{-- Registration Statistics --}}
-                <a
-                    class="nav-link"
-                    href="{{ route('dashboard') }}#registration-statistics">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-
-                    Registration Stats
-
-                </a>
-
-
-                {{-- ================================================= --}}
-                {{-- QUICK ACTIONS --}}
-                {{-- ================================================= --}}
-
-                <div class="sb-sidenav-menu-heading">
-                    Quick Actions
-                </div>
-
-
-                <a
-                    class="nav-link"
-                    href="{{ route('users.index') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-user-cog"></i>
-                    </div>
-
-                    Manage Users
-
-                </a>
-
-
-                <a
-                    class="nav-link"
-                    href="{{ route('activity.logs') }}">
-
-                    <div class="sb-nav-link-icon">
-                        <i class="fas fa-search"></i>
-                    </div>
-
-                    Search Activities
-
+                {{-- Profile --}}
+                <a class="nav-link {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.show') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-circle text-secondary"></i></div>
+                    My Profile
                 </a>
 
             </div>
-
         </div>
 
-
-        {{-- ===================================================== --}}
-        {{-- SIDEBAR FOOTER --}}
-        {{-- ===================================================== --}}
-
-        <div class="sb-sidenav-footer">
-
-            <div class="small">
-                Logged in as:
-            </div>
-
-            <strong>
-                Administrator
-            </strong>
-
-            <div class="small text-muted mt-1">
-                Laravel {{ app()->version() }}
-            </div>
-
+        {{-- Footer --}}
+        <div class="sb-sidenav-footer bg-dark border-top border-secondary">
+            <div class="small text-muted">Logged in as:</div>
+            <div class="fw-bold text-light">System Administrator</div>
         </div>
-
     </nav>
-
 </div>
